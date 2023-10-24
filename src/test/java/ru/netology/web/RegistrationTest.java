@@ -14,12 +14,12 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class RegistrationTest {
     LocalDate currentDate = LocalDate.now().plusDays(3);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     String formattedCurrentDate = currentDate.format(formatter);
 
 
     @Test
-    void formRegistrationTest()  {
+    void formRegistrationTest() {
         open("http://localhost:9999/");
         $("[data-test-id=city] input").setValue("Москва");
         $(By.xpath("//input[@placeholder='Дата встречи']")).sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
@@ -28,7 +28,7 @@ public class RegistrationTest {
         $("[data-test-id=phone] input").setValue("+79123456789");
         $("[data-test-id=agreement]").click();
         $(".button").shouldHave(text("Забронировать")).click();
-        $("[data-test-id=notification]").should(visible, Duration.ofSeconds(15));
+        $("[data-test-id=notification]").shouldHave(text("Успешно!\n Встреча успешно забронирована на\n" + formattedCurrentDate), Duration.ofSeconds(15));
     }
 
 
